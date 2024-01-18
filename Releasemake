@@ -1,0 +1,24 @@
+VERSION := $(shell git describe --tags --abbrev=0)
+
+MAJOR := $(shell echo $(VERSION) | cut -d'v' -f2 | cut -d. -f1)
+FEATURE := $(shell echo $(VERSION) | cut -d. -f2)
+PATCH := $(shell echo $(VERSION) | cut -d. -f3)
+
+symbol-major-release:
+	@echo "Current Major Version is $(MAJOR)"
+	NEW_MAJOR = $(shell echo $$(($(MAJOR) + 3)))
+	TAG = v$(NEW_MAJOR).0.0
+	@echo "Incremented Major Version is $(NEW_MAJOR)"
+	@echo "Releasing New Version $(TAG)"
+
+
+
+symbol-feature-release:
+	@echo "Current Feature Version: $(MAJOR).$(FEATURE).$(PATCH)"
+	@echo "Incremented Major Version: $(NEW_MAJOR)"
+	@echo "New Tag: $(TAG)"
+
+symbol-patch-release:
+	@echo "Current Patch Version: $(MAJOR).$(FEATURE).$(PATCH)"
+	@echo "Incremented Patch Version: $(MAJOR).$(FEATURE).$$(($(PATCH) + 1))"
+	@echo "New Tag: v$(MAJOR).$(FEATURE).$$(($(PATCH) + 1))"
