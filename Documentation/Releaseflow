@@ -1,0 +1,19 @@
+SYMBOL RELEASE FLOW
+
+Symbol release flow is using GIT VERSIONING
+Below are some standardizations and rules which we need to follow for maintaining robust , secure and scalable codebase.
+This rules will enable us to maintain and release symbol effectively and effeciently with minimum efforts.
+
+---
+
+- WE ARE USING GIT HOOKS FOR EFFECTIVELY MINIMIZING ERROS IN DEVELOPMENT ENVIRONMENT
+- Also for maintaining consistency in each commit of project we are using commit-msg hook. We have specified some formate and standards for commits.
+
+MAJOR.FEATURE.PATCH
+v1.0.0
+major | feature | patch
+
+commit message will be
+type-of-commit:status:msg
+type-of-commit : [majr , conf , docs , perf, fix , rtn , feat , patch , bug]
+status : [done , indev , blocked]
