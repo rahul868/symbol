@@ -1,9 +1,11 @@
 #!/bin/bash
 
-commit_msg="$1"
+commit_msg_file="$1"
+commit_msg=$(cat "$commit_msg_file")
 
+echo $commit_msg
 # Define the regex pattern for the commit message format
-commit_regex=(majr|conf|docs|perf|fix|rtn|feat|patch|bug):(done|indev|blocked):
+commit_regex='^(majr|conf|docs|perf|fix|rtn|feat|patch|bug):(done|indev|blocked):.+$'
 
 # Check if the commit message matches the pattern
 if [[ "$commit_msg" =~ $commit_regex ]]; then
