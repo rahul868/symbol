@@ -1,0 +1,52 @@
+Let's declare what type of data we symbol will accept:
+    1) PARENTIAL DATA (DEPENDENT DATA)
+    2) NON-PARENTIAL DATA (NON DEPENDENT DATA)
+    
+Initially symbol is accepting 2 type of data declared above. Because 95% of data storage requirements belongs to above two schemas.
+
+SYMBOL WILL ONLY ACCEPT DATA FOR 
+    PARENTIAL DATA : SPACE:PARENT(OWNER):UID
+    NON-PARENTIAL DATA : SPACE:UID
+
+ENTITIES : 
+    SPACE - SPACE IS TERM USED FOR COLLECTION OF SAME TYPE OF DATA IN SYMBOL. ex . USER'S DATA 
+            SYMBOL STORES SAME TYPE OF DATA LIKE POST DATA , USERS DATA IN ONE SINGLE PLACE CALLED SPACE.
+    
+    PARENT - MEANS UID OF PARENT OF DATA i.e (PARENT IS SOME UID WHICH OWNS THIS DATA)
+    UID - UINQIE IDENTIFIER.
+
+
+API FOR WRITING IN SYMBOL STORAGE WILL BE:
+    INSERT(TYPE , PARENT (OWNER) , DATAPAYLOAD(STRING) , )
+        TYPE : PARENTIAL (S_P) , NON-PARENTIAL (S_NP)
+        OWNER : USERID (In case of user is owner of data)
+    UPDATE("S_P");
+
+
+* NON-PARENTIAL DATA (NON DEPENDENT DATA)
+
+    - This type of data is not dependent or does not have relation with other data. Means This data does not have parent or source.    
+    - Example : 
+        USER PROFILE DATA : {username , profile , age , email}
+        This data is does not have parent source. So this kind of data is considered to be NON-PARENTIAL DATA (NON DEPENDENT DATA)
+
+*****************************************************************************************************************************
+
+* PARENTIAL DATA (DEPENDENT DATA)
+
+    - This type of data is dependent or relation with other data. Means This data have parent or source.
+    - Example : 
+        USER'S POST DATA OR USER'S ORDERS DATA : {username , orderid , metadata , item}
+        Means this data is originated from its parent and this type of data have its own parents from which it belongs.
+        In above case USER is parent of POST OR ORDER DATA.
+
+Above type of arcitecture will make symbol different in storage segments. Becuase above two types will have unique and simple strategies to accept and store data.
+
+NON-PARENTIAL DATA FEATURES : 
+    - Since non-parential data does not have any parent it will be unique and incremental everytime.
+    - Have fixed method for uniquely identify it.
+    - Stored in sorted manner accroding to their insertion and UID.
+    - 
+
+* RULES FOR ACCEPTING NON-PARENTIAL DATA (PUT) : 
+    
