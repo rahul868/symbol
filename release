@@ -1,0 +1,124 @@
+#!/bin/bash
+
+# Prompt the user for input
+read -p "Enter a type of release: " rel_type
+# m : major , f : feature , p : patch
+
+# Fetch latest symbol version
+VERSION=$(git describe --tags --abbrev=0)
+
+# Print the version
+echo "Latest symbol version is $VERSION"
+
+unset MAJOR
+unset FEATURE
+unset PATCH
+
+function version_building() {
+    versions=()
+    length=${#VERSION}
+    till=""
+    for ((i = 0; i < length; i++)); do
+        char="${VERSION:i:1}"
+        echo "$i $char"
+        if [[ $char == "." ]]; then
+            versions+=($till)
+            till=""
+            echo "Found"
+            continue
+        fi
+      till+=$char
+    done
+
+    # Add the last version element if not ending with a dot
+    if [ -n "$till" ]; then
+        versions+=($till)
+    fi
+
+    # Setting variable for Major , Feature and Patch version
+    MAJOR=${versions[0]#v}
+    FEATURE=${versions[1]}
+    PATCH=${versions[2]}
+
+    echo "build versions $MAJOR $FEATURE $PATCH"
+}
+
+
+# Call the function
+version_building
+
+
+function 
+
+function release_build() {
+    local build_version=$1
+    local build_type=$2
+    while true; do
+        read -p "Sure you want to release $build_type build $build_version : " rel_perm
+        if [ $rel_perm == "no" ]; then
+            echo "Release process discarded."
+            exit 1
+        elif [ $rel_perm == "yes" ]; then
+            echo "Initiating releasing process...."
+            echo "Releasing $build_type build $build_version to servers."
+            break
+        else
+            echo "Please pass yes / no"
+        fi
+    done
+}
+
+function major_build() {
+    echo "Current Major Version is $MAJOR"
+    echo "New incremented major version is $((MAJOR + 1))"
+    echo "Previous Symbol's Version v$MAJOR.$FEATURE.$PATCH"
+    echo "Releasing New Version v$((MAJOR + 1)).0.0"
+    release_build v$((MAJOR + 1)).0.0 MAJOR
+}
+
+function feature_build() {
+    echo "Current Major Version is $FEATURE"
+    echo "New incremented major version is $((FEATURE + 1))"
+    echo "Previous Symbol's Version v$MAJOR.$FEATURE.$PATCH"
+    echo "Releasing New Version v$MAJOR.$((FEATURE + 1)).0"
+    release_build v$MAJOR.$((FEATURE + 1)).0 FEATURE
+
+}
+
+function patch_build() {
+    echo "Current Patch Version is $PATCH"
+	echo "New incremented patch version is $((PATCH + 1))"
+	echo "Previous Symbol's Version v$MAJOR.$FEATURE.$PATCH"
+	echo "Releasing New Version v$MAJOR.$FEATURE.$((PATCH + 1))"
+    release_build v$MAJOR.$FEATURE.$((PATCH + 1)) PATCH
+
+}
+
+
+if [ -z "$rel_type" ]; then
+    echo "Please provide release type."
+    exit 1
+else 
+    if [ "$rel_type" == "major" ]; then
+        # Add your logic for the "major" release type here
+        echo "Processing major release..."
+        major_build
+    elif [ "$rel_type" == "feature" ]; then
+        # Add your logic for the "feature" release type here
+        echo "Processing feature release..."
+        make -f releasemake symbol-${rel_type}-release
+        feature_build
+    elif [ "$rel_type" == "patch" ]; then
+        # Add your logic for the "feature" release type here
+        echo "Processing patch release..."
+        patch_build
+    else
+        # Add your logic for other release types here
+        echo "Invalid or not allowed release type."
+        exit 1
+    fi
+fi
+
+exit 0
+
+# make -f Releasemake symbol-major-release
