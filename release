@@ -48,8 +48,6 @@ function version_building() {
 version_building
 
 
-function 
-
 function release_build() {
     local build_version=$1
     local build_type=$2
@@ -62,7 +60,7 @@ function release_build() {
             echo "Initiating releasing process...."
             echo "Releasing $build_type build $build_version to servers."
             break
-        else
+        else            
             echo "Please pass yes / no"
         fi
     done
@@ -91,7 +89,6 @@ function patch_build() {
 	echo "Previous Symbol's Version v$MAJOR.$FEATURE.$PATCH"
 	echo "Releasing New Version v$MAJOR.$FEATURE.$((PATCH + 1))"
     release_build v$MAJOR.$FEATURE.$((PATCH + 1)) PATCH
-
 }
 
 
